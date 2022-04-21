@@ -7,7 +7,7 @@ const fs = require("fs");
 const db = require("./app/models");
 const dotenv = require("dotenv");
 const auth = require("./middleware/auth");
-const initialCategories = require("./app/migrations/category.migrations")
+const initialCategories = require("./app/migrations/category.migrations");
 dotenv.config();
 const port = process.env.PORT || 5000;
 
@@ -35,20 +35,24 @@ app.get("/api/dictionary/:param", (req, res) => {
   res.send(dictionaryJson[value]);
 });
 
+app.get("/", (req, res) => {
+  res.status(200).send("Welcome 🙌 Welcome 🙌 ");
+});
 app.get("/dashboard", auth, (req, res) => {
   res.status(200).send("Welcome 🙌 Welcome 🙌 ");
 });
 
 // db.sequelize.sync();
 //drop table if it already extist
-db.sequelize.sync({ force: true }).then(() => {initialCategories();});
+db.sequelize.sync({ force: true }).then(() => {
+  initialCategories();
+});
 
 require("./app/routes/user.route")(app);
 require("./app/routes/category.route")(app);
 require("./app/routes/book.route")(app);
 require("./app/routes/chapter.route")(app);
 require("./app/routes/author.route")(app);
-
 
 // require("./app/routes/book_category.route")(app);
 
